@@ -1,0 +1,27 @@
+# Virtual Environments
+.venv/
+venv/
+ENV/
+
+# Python caching
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local database
+backend/chroma_db_local/
+
+# Environment credentials (secrets)
+.env
+backend/.env
+
+# Node.js dependencies
+frontend/node_modules/
+frontend/dist/
+frontend/.svelte-kit/
+frontend/.next/
+
+# OS files
+.DS_Store
+Thumbs.db
