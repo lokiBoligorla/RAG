@@ -11,13 +11,14 @@ RUN useradd -m -u 1000 user
 
 WORKDIR /app
 
-# Install system build dependencies required for compiling some packages
+# Install system build dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy and install python dependencies first to leverage Docker layer caching
-COPY backend/requirements.txt /app/requirements.txt
+# Copy and install python dependencies first.
+# Since files are in the root directory on Hugging Face, we read requirements.txt directly from root.
+COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r /app/requirements.txt
 
@@ -28,14 +29,13 @@ RUN mkdir -p /app/.cache && chown -R user:user /app
 USER user
 
 # Pre-download the Hugging Face sentence-transformers model during build time
-# so that the container is fully loaded and starts up instantly at runtime.
 RUN python -c "from langchain_community.embeddings import HuggingFaceEmbeddings; HuggingFaceEmbeddings(model_name='all-MiniLM-L6-v2')"
 
-# Copy the rest of the application files
+# Copy the rest of the application files (assuming main.py is in the root)
 COPY --chown=user:user . /app/
 
 # Expose port 7860 (Hugging Face Spaces default exposed port)
 EXPOSE 7860
 
-# Run FastAPI using uvicorn on port 7860
-CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "7860"]
+# Run FastAPI using uvicorn (assuming main.py is in root)
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]
