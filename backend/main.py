@@ -124,7 +124,7 @@ async def get_file_content(filename: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error parsing PDF: {str(e)}")
 
-@app.get("/status", summary="Check if the vector store is indexed")
+@app.api_route("/status", methods=["GET", "HEAD"], summary="Check if the vector store is indexed")
 async def get_status():
     is_indexed = rag.vectorstore is not None
     return {
