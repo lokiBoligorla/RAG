@@ -65,13 +65,13 @@ const renderMessageText = (text) => {
     
     if (isBullet) {
       return (
-        <li key={lineIdx} style={{ marginLeft: '16px', marginBottom: '8px', listStyleType: 'disc', color: 'var(--text-secondary)' }}>
+        <li key={lineIdx} className="message-text-li">
           {parts}
         </li>
       );
     }
     return (
-      <p key={lineIdx} style={{ marginBottom: '8px', color: 'var(--text-primary)', fontSize: '14px', lineHeight: '1.6' }}>
+      <p key={lineIdx} className="message-text-p">
         {parts}
       </p>
     );
@@ -166,62 +166,28 @@ function App() {
   const isInitialState = chatHistory.length === 1;
 
   return (
-    <div className="app-container" style={{ display: 'flex', flexDirection: 'column', height: '100vh', position: 'relative', backgroundColor: 'var(--bg-deep)' }}>
+    <div className="app-container">
       
       {/* Background Glowing Orbs */}
-      <div style={{
-        position: 'absolute',
-        top: '10%',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        width: '600px',
-        height: '300px',
-        background: 'radial-gradient(circle, rgba(99, 102, 241, 0.04) 0%, transparent 70%)',
-        zIndex: -1,
-        pointerEvents: 'none'
-      }} />
+      <div className="bg-glow-orb" />
 
       {/* Header */}
-      <header className="glass-panel" style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center', 
-        padding: '16px 24px', 
-        margin: '20px 20px 8px 20px', 
-        borderRadius: '16px',
-        borderBottom: '1px solid var(--border-color)'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-          <div style={{ 
-            background: 'var(--primary-gradient)', 
-            padding: '10px', 
-            borderRadius: '12px', 
-            display: 'flex', 
-            alignItems: 'center',
-            boxShadow: '0 4px 12px rgba(79, 70, 229, 0.2)' 
-          }}>
+      <header className="glass-panel app-header">
+        <div className="header-logo-container">
+          <div className="header-logo-icon">
             <Cpu size={22} color="#fff" />
           </div>
           <div>
-            <h1 className="text-gradient" style={{ fontSize: '20px', fontWeight: '800', letterSpacing: '0.5px' }}>PolicyPilot</h1>
-            <p style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <h1 className="text-gradient header-title">PolicyPilot</h1>
+            <p className="header-subtitle">
               <ShieldAlert size={12} color="#0d9488" /> Secure Enterprise HR Portal
             </p>
           </div>
         </div>
         
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <div className="header-actions">
           {/* Status Indicator */}
-          <div className="glass-card" style={{ 
-            padding: '8px 16px', 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '10px', 
-            borderRadius: '10px', 
-            fontSize: '13px',
-            border: '1px solid var(--border-color)',
-            background: 'var(--bg-card)'
-          }}>
+          <div className="status-badge">
             <div style={{ 
               width: '8px', 
               height: '8px', 
@@ -229,7 +195,7 @@ function App() {
               backgroundColor: status.is_indexed ? '#10b981' : '#f59e0b', 
               boxShadow: status.is_indexed ? '0 0 10px #10b981' : '0 0 10px #f59e0b' 
             }} className="pulsing"></div>
-            <span style={{ color: 'var(--text-primary)', fontWeight: '600' }}>
+            <span className="status-text">
               {status.is_indexed ? 'System Online' : 'Offline'}
             </span>
           </div>
@@ -238,85 +204,40 @@ function App() {
           {!isInitialState && (
             <button 
               onClick={clearChat}
-              style={{
-                background: 'rgba(239, 68, 68, 0.08)',
-                color: '#dc2626',
-                border: '1px solid rgba(239, 68, 68, 0.15)',
-                padding: '8px 12px',
-                borderRadius: '10px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                fontSize: '12px',
-                fontWeight: '600',
-                transition: 'var(--transition-fast)'
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.15)' }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.08)' }}
+              className="clear-chat-btn"
             >
-              <Trash2 size={13} /> Clear Chat
+              <Trash2 size={13} /> <span>Clear Chat</span>
             </button>
           )}
         </div>
       </header>
 
       {/* Main Workspace Layout - Centered Chat Container */}
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden', padding: '8px 20px 20px 20px', justifyContent: 'center' }}>
+      <div className="main-layout">
         
         {/* Chat Window Container (Centered Claude-Style Chat) */}
-        <div className="glass-panel" style={{ 
-          width: '100%', 
-          maxWidth: '850px', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          overflow: 'hidden', 
-          padding: '24px 28px',
-          border: '1px solid var(--border-color)'
-        }}>
+        <div className="glass-panel chat-container">
           
           {/* Chat History View */}
-          <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '22px', paddingRight: '6px', marginBottom: '16px' }}>
+          <div className="chat-history">
             
             {/* Initial Assistant Bubble */}
-            <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-              <div style={{
-                background: 'rgba(79, 70, 229, 0.08)',
-                border: '1px solid rgba(79, 70, 229, 0.15)',
-                padding: '8px',
-                borderRadius: '8px',
-                color: '#4f46e5',
-                display: 'flex',
-                alignItems: 'center',
-                marginTop: '4px'
-              }}>
+            <div className="chat-row assistant-row">
+              <div className="avatar-container">
                 <Cpu size={16} />
               </div>
-              <div style={{
-                flex: 1,
-                padding: '16px 20px',
-                borderRadius: '16px',
-                background: 'rgba(0, 0, 0, 0.015)',
-                border: '1px solid var(--border-color)',
-                borderLeft: '4px solid #4f46e5',
-                color: 'var(--text-primary)',
-                fontSize: '14px',
-                lineHeight: '1.6'
-              }}>
+              <div className="message-bubble assistant-bubble first-bubble">
                 {renderMessageText(chatHistory[0].text)}
               </div>
             </div>
 
             {/* Suggested Prompt Cards (Only visible when user hasn't asked anything yet) */}
             {isInitialState && (
-              <div style={{ margin: '12px 0 12px 40px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)', fontSize: '13px', fontWeight: '600', marginBottom: '14px' }}>
+              <div className="suggested-container">
+                <div className="suggested-title">
                   <HelpCircle size={14} color="#4f46e5" /> Suggested Inquiries:
                 </div>
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))',
-                  gap: '12px'
-                }}>
+                <div className="suggested-grid">
                   {SUGGESTED_PROMPTS.map((card, idx) => (
                     <div 
                       key={idx} 
@@ -336,40 +257,14 @@ function App() {
 
             {/* User & Assistant conversation bubbles */}
             {chatHistory.slice(1).map((msg, index) => (
-              <div key={index} style={{ 
-                display: 'flex', 
-                gap: '12px',
-                justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start',
-                alignItems: 'flex-start'
-              }}>
+              <div key={index} className={`chat-row ${msg.role === 'user' ? 'user-row' : 'assistant-row'}`}>
                 {msg.role !== 'user' && (
-                  <div style={{
-                    background: 'rgba(79, 70, 229, 0.08)',
-                    border: '1px solid rgba(79, 70, 229, 0.15)',
-                    padding: '8px',
-                    borderRadius: '8px',
-                    color: '#4f46e5',
-                    display: 'flex',
-                    alignItems: 'center',
-                    marginTop: '4px'
-                  }}>
+                  <div className="avatar-container">
                     <Cpu size={16} />
                   </div>
                 )}
                 
-                <div style={{
-                  maxWidth: '82%',
-                  padding: '16px 20px',
-                  borderRadius: '16px',
-                  fontSize: '14px',
-                  lineHeight: '1.6',
-                  background: msg.role === 'user' ? 'var(--primary-gradient)' : 'rgba(0, 0, 0, 0.015)',
-                  border: msg.role === 'user' ? 'none' : '1px solid var(--border-color)',
-                  borderLeft: msg.role === 'user' ? 'none' : '4px solid #10b981',
-                  color: msg.role === 'user' ? '#fff' : 'var(--text-primary)',
-                  boxShadow: msg.role === 'user' ? '0 6px 16px rgba(79, 70, 229, 0.2)' : 'none',
-                  transition: 'var(--transition-fast)'
-                }}>
+                <div className={`message-bubble ${msg.role === 'user' ? 'user-bubble' : 'assistant-bubble reply-bubble'}`}>
                   {msg.role === 'user' ? (
                     <p style={{ margin: 0, fontWeight: '500' }}>{msg.text}</p>
                   ) : (
@@ -381,49 +276,35 @@ function App() {
 
             {/* Generating response state */}
             {loadingQuery && (
-              <div style={{ display: 'flex', gap: '12px', alignItems: 'center', color: 'var(--text-secondary)', fontSize: '13px', paddingLeft: '40px' }}>
+              <div className="status-loading">
                 <RefreshCw size={14} className="spinning-slow" color="#10b981" />
-                <span>Securing policy search and synthesizing response...</span>
+                <span>Securing search & synthesizing response...</span>
               </div>
             )}
             <div ref={chatEndRef} />
           </div>
 
           {/* Input form */}
-          <form onSubmit={onSubmit} style={{ display: 'flex', gap: '12px', position: 'relative', marginTop: '8px' }}>
+          <form onSubmit={onSubmit} className="chat-form">
             <input 
               type="text" 
-              placeholder="Ask a question about HR, insurance, leaves or IT guidelines..." 
+              placeholder="Ask about leaves, remote work, insurance..." 
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              style={{ 
-                flex: 1, 
-                background: 'var(--bg-card)',
-                paddingRight: '120px',
-                border: '1px solid var(--border-color)'
-              }}
+              className="chat-input"
               disabled={loadingQuery}
             />
             <button 
               type="submit" 
-              className="glow-btn"
+              className="glow-btn chat-submit-btn"
               disabled={loadingQuery || !status.is_indexed || !query.trim()}
-              style={{ 
-                position: 'absolute',
-                right: '6px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                padding: '8px 18px',
-                height: 'calc(100% - 12px)',
-                fontSize: '13px'
-              }}
             >
-              <Send size={14} /> Send
+              <Send size={14} /> <span className="send-text">Send</span>
             </button>
           </form>
           
           {/* Footer warning details */}
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', marginTop: '16px', fontSize: '10px', color: 'var(--text-muted)' }}>
+          <div className="chat-footer">
             <span>🔒 Confidential Internal Portal</span>
             <span>•</span>
             <span>⚡ Real-time Verification</span>
